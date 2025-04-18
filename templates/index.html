@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>白內障辨識網站</title>
+</head>
+<body>
+    <h1>白內障影像辨識 (TFLite)</h1>
+    <input type="file" id="fileUpload">
+    <button onclick="uploadImage()">辨識影像</button>
+    <h2 id="result"></h2>
+
+    <script>
+        async function uploadImage() {
+            const input = document.getElementById('fileUpload');
+            if (input.files.length === 0) {
+                alert("請選擇一張圖片！");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("file", input.files[0]);
+
+            const response = await fetch("/predict", {
+                method: "POST",
+                body: formData
+            });
+
+            const result = await response.json();
+            document.getElementById('result').innerText = "預測結果：" + result.prediction;
+        }
+    </script>
+</body>
+</html>
