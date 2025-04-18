@@ -6,9 +6,7 @@ import io
 from PIL import Image
 import tflite_runtime.interpreter as tflite
 
-import pathlib, subprocess
-if not pathlib.Path("cataract.tflite").exists():
-    subprocess.run(["7z", "x", "cataract.tflite.7z"], check=True)
+
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
