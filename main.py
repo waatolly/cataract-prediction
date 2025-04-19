@@ -13,7 +13,7 @@ import zipfile
 from fastapi import FastAPI, File, UploadFile
 
 MODEL_FILE = "cataract.tflite"          # 解壓後真正要載入的檔名
-ZIP_FILE   = "cataract.tflite.zip"      # 你的壓縮檔名，若用 .7z 請改成對應檔
+ZIP_FILE   = "cataract.7z"      # 你的壓縮檔名，若用 .7z 請改成對應檔
 # 若你用 .7z，請把 ZIP_FILE 改成 "cataract.tflite.7z"
 
 def ensure_model():
@@ -29,7 +29,7 @@ def ensure_model():
             f"找不到壓縮檔 {ZIP_FILE}，無法解壓模型")
 
     print(f"[INFO] 正在解壓 {ZIP_FILE} ...")
-    if ZIP_FILE.endswith(".zip"):
+    if ZIP_FILE.endswith(".7z"):
         with zipfile.ZipFile(ZIP_FILE, "r") as zf:
             zf.extractall(".")          # 解到當前資料夾
     else:
