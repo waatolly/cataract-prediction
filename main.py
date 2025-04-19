@@ -34,9 +34,8 @@ ensure_model()
 
 # -----------------------------------------
 # 以下原本載入 TFLite Interpreter 的程式不變
-import tflite_runtime.interpreter as tflite
-interpreter = tflite.Interpreter(model_path=MODEL_FILE)
-interpreter.allocate_tensors()
+import tensorflow as tf
+interpreter = tf.lite.Interpreter(model_path=str(MODEL_PATH))
 # -----------------------------------------
 
 app = FastAPI()
