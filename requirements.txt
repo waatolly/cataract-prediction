@@ -4,3 +4,4 @@ pillow
 jinja2
 python-multipart
 py7zr
+tensorflow==2.16.1
