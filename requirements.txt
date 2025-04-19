@@ -1,6 +1,5 @@
 fastapi
 uvicorn[standard]
-tflite-runtime
 pillow
 jinja2
 python-multipart
