@@ -5,40 +5,31 @@ import numpy as np
 import io
 from PIL import Image
 import tflite_runtime.interpreter as tflite
-
-import os
 import pathlib
-import subprocess
-import zipfile
+import py7zr
 from fastapi import FastAPI, File, UploadFile
+import numpy as np
+from PIL import Image
+import io
+import tflite_runtime.interpreter as tflite   # 若用完整 tensorflow 則改 import tensorflow as tf
 
-MODEL_FILE = "cataract.tflite"          # 解壓後真正要載入的檔名
-ZIP_FILE   = "cataract.7z"      # 你的壓縮檔名，若用 .7z 請改成對應檔
-# 若你用 .7z，請把 ZIP_FILE 改成 "cataract.tflite.7z"
+
+MODEL_FILE = "cataract.tflite"
+ARCHIVE_FILE = "cataract.7z"
 
 def ensure_model():
-    """
-    若專案根目錄沒有 cataract.tflite，
-    就從 cataract.tflite.zip（或 .7z）解壓縮出來。
-    """
+    """若本地沒有 cataract.tflite，便從 cataract.7z 解壓。"""
     if pathlib.Path(MODEL_FILE).exists():
-        return  # 已經有模型檔，直接回傳
+        return
 
-    if not pathlib.Path(ZIP_FILE).exists():
-        raise FileNotFoundError(
-            f"找不到壓縮檔 {ZIP_FILE}，無法解壓模型")
+    if not pathlib.Path(ARCHIVE_FILE).exists():
+        raise FileNotFoundError(f"找不到 {ARCHIVE_FILE}，無法解壓模型")
 
-    print(f"[INFO] 正在解壓 {ZIP_FILE} ...")
-    if ZIP_FILE.endswith(".7z"):
-        with zipfile.ZipFile(ZIP_FILE, "r") as zf:
-            zf.extractall(".")          # 解到當前資料夾
-    else:
-        # 假設是 .7z，呼叫系統的 7z 指令
-        # 需要系統已安裝 7-Zip CLI (Windows)或 p7zip (Linux/macOS)
-        subprocess.run(["7z", "x", "-y", ZIP_FILE], check=True)
-    print(f"[INFO] 解壓完成！")
+    print(f"[INFO] 解壓 {ARCHIVE_FILE} → {MODEL_FILE} ...")
+    with py7zr.SevenZipFile(ARCHIVE_FILE, mode="r") as z:
+        z.extractall()      # 解到目前目錄
+    print("[INFO] 解壓完成！")
 
-# ↓↓↓ 先確保模型已就緒
 ensure_model()
 
 # -----------------------------------------
