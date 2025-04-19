@@ -4,3 +4,4 @@ tflite-runtime
 pillow
 jinja2
 python-multipart
+py7zr
