@@ -4,4 +4,4 @@ pillow
 jinja2
 python-multipart
 py7zr
-tflite-runtime==2.13.0
+tflite-runtime==2.12.0
